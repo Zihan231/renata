@@ -1,4 +1,9 @@
 import './globals.css';
+import { Sora, Space_Grotesk } from 'next/font/google';
+
+// Self-hosted by Next at build time: no render-blocking request to Google on slow mobile data.
+const sora = Sora({ subsets: ['latin'], weight: ['400', '600'], display: 'swap', variable: '--f-sora' });
+const grot = Space_Grotesk({ subsets: ['latin'], weight: ['500', '700'], display: 'swap', variable: '--f-grot' });
 
 export const metadata = {
   title: 'Renata Oncology Quiz',
@@ -7,13 +12,17 @@ export const metadata = {
 
 export const viewport = { width: 'device-width', initialScale: 1 };
 
+// Runs before first paint: phones, low-core / low-memory / data-saver devices get the "lite" tier.
+// Force a tier for testing with ?perf=lite or ?perf=full.
+const TIER = `(function(){try{var d=document.documentElement,n=navigator,m=location.search.match(/perf=(lite|full)/);
+var lite=matchMedia('(pointer:coarse)').matches||innerWidth<820||(n.hardwareConcurrency&&n.hardwareConcurrency<=4)||(n.deviceMemory&&n.deviceMemory<=4)||(n.connection&&n.connection.saveData)||matchMedia('(prefers-reduced-motion:reduce)').matches;
+if(m)lite=m[1]==='lite';if(lite)d.dataset.perf='lite'}catch(e){}})()`;
+
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${sora.variable} ${grot.variable}`} suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+        <script dangerouslySetInnerHTML={{ __html: TIER }} />
       </head>
       <body>{children}</body>
     </html>

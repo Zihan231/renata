@@ -47,6 +47,8 @@ export default function Quiz() {
 
   // 3D tilt on the card following the pointer
   useEffect(() => {
+    // tilt only with a mouse on a capable device (touch screens fire pointermove on every swipe)
+    if (!matchMedia('(hover:hover) and (pointer:fine)').matches || document.documentElement.dataset.perf === 'lite') return;
     const move = (e) => {
       const c = cardRef.current; if (!c) return;
       c.style.transform = `rotateY(${(e.clientX / innerWidth - 0.5) * 7}deg) rotateX(${(0.5 - e.clientY / innerHeight) * 6}deg)`;
@@ -184,14 +186,14 @@ export default function Quiz() {
   const q = qs[Math.min(idx, TOTAL - 1)];
   const first = res.first;
   const tiles = BRANDS.map(([n, c], i) => (
-    <div className="tile" style={{ '--c': c, '--i': i }} key={n}><div className="in"><img src={`/img/${n}_PNG.png`} alt={n} /></div></div>
+    <div className="tile" style={{ '--c': c, '--i': i }} key={n}><div className="in"><img src={`/img/${n}_PNG.png`} alt={n} width="180" height="80" decoding="async" /></div></div>
   ));
 
   return (
     <>
       <FxLayer ref={fx} />
       <div className="stage">
-        <div className="brand"><img src="/img/logo.png" alt="Renata PLC" /></div>
+        <div className="brand"><img src="/img/logo.png" alt="Renata PLC" width="172" height="34" decoding="async" /></div>
 
         <div className={`card${shake ? ' shake' : ''}`} ref={cardRef}>
           {/* 1: register */}
