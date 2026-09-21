@@ -275,7 +275,7 @@ h1,.ri .qq,.ri .aa,.q,.opt span{overflow-wrap:anywhere}
   body.result .review{gap:8px}
   body.result .ri{padding:8px 10px}
   body.result .ri .aa{margin-top:3px;padding:3px 8px}
-  body.result .stars{font-size:22px;margin:0;letter-spacing:4px}
+  body.result .stars{font-size:28px;margin:0;letter-spacing:6px;grid-column:2;grid-row:2/4;align-self:center;justify-self:center;text-align:center;white-space:nowrap}
   body.result .meta{margin:2px 0 4px}
   body.result .meta div{padding:6px 10px}
   body.result .btn{padding:12px}
