@@ -21,8 +21,9 @@ if(m)lite=m[1]==='lite';if(lite)d.dataset.perf='lite'}catch(e){}})()`;
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${sora.variable} ${grot.variable}`} suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: TIER }} />
+      {/* suppressHydrationWarning: browser extensions inject their own <script> into <head> before React hydrates */}
+      <head suppressHydrationWarning>
+        <script suppressHydrationWarning dangerouslySetInnerHTML={{ __html: TIER }} />
       </head>
       <body>{children}</body>
     </html>

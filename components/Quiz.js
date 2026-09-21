@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import FxLayer from './FxLayer';
 import { BANK, BRANDS, TOTAL, shuffle } from '@/lib/questions';
 import { normalizeBdPhone, PHONE_ERROR } from '@/lib/phone';
+import * as sfx from '@/lib/sound';
 
 const MARK_OK = 'M38 62 L54 78 L84 44';
 const MARK_NO = 'M42 42 L78 78 M78 42 L42 78';
@@ -41,9 +42,24 @@ export default function Quiz() {
   const [res, setRes] = useState({ first: 0, tries: 0, missedQ: [] });
   const [ringOn, setRingOn] = useState(false);
   const [count, setCount] = useState(0);
+  const [muted, setMuted] = useState(false);
 
   const later = useCallback((fn, ms) => { timers.current.push(setTimeout(fn, ms)); }, []);
   useEffect(() => () => timers.current.forEach(clearTimeout), []);
+
+  // sound: unlock audio on the first tap (browser autoplay rules), restore the saved mute choice
+  useEffect(() => {
+    try { const m = localStorage.getItem('renata-mute') === '1'; setMuted(m); sfx.setMuted(m); } catch {}
+    const unlock = () => sfx.unlock();
+    addEventListener('pointerdown', unlock, { once: true });
+    addEventListener('keydown', unlock, { once: true });
+    return () => { removeEventListener('pointerdown', unlock); removeEventListener('keydown', unlock); };
+  }, []);
+  const toggleMute = () => {
+    const m = !muted; setMuted(m); sfx.setMuted(m);
+    try { localStorage.setItem('renata-mute', m ? '1' : '0'); } catch {}
+    if (!m) { sfx.unlock(); sfx.correct(); }
+  };
 
   // 3D tilt on the card following the pointer
   useEffect(() => {
@@ -112,10 +128,12 @@ export default function Quiz() {
     if (ok) {
       if (!stat.current.missed) stat.current.first++;
       fx.current?.burst(r.left + r.width / 2, r.top + r.height / 2, 120);
+      sfx.correct();
       later(() => feedback(true), 650);
     } else {
       stat.current.missed = true; stat.current.missedQ[idx] = true;
       setShake(true); later(() => setShake(false), 600);
+      sfx.wrong();
       navigator.vibrate?.(200);
       later(() => feedback(false), 650);
     }
@@ -172,6 +190,7 @@ export default function Quiz() {
       }, 2000 / Math.max(1, res.first) / 1.5);
       timers.current.push(iv);
       fx.current?.fireworks(res.first === TOTAL ? 9 : 5);
+      sfx.finale(res.first === TOTAL);
     }, 700);
     return () => clearTimeout(t);
   }, [screen, res.first]);
@@ -192,6 +211,7 @@ export default function Quiz() {
   return (
     <>
       <FxLayer ref={fx} />
+      <button className="snd" onClick={toggleMute} aria-label={muted ? 'Unmute sound' : 'Mute sound'} title={muted ? 'Sound off' : 'Sound on'}>{muted ? '🔇' : '🔊'}</button>
       <div className="stage">
         <div className="brand"><img src="/img/logo.png" alt="Renata PLC" width="172" height="34" decoding="async" /></div>
 
