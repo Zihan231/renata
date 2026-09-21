@@ -10,7 +10,8 @@ export const metadata = {
   description: 'Renata Oncology bioequivalence quiz',
 };
 
-export const viewport = { width: 'device-width', initialScale: 1 };
+// viewportFit 'cover' + safe-area padding in globals.css keeps content clear of phone notches / status bars
+export const viewport = { width: 'device-width', initialScale: 1, viewportFit: 'cover' };
 
 // Runs before first paint: phones, low-core / low-memory / data-saver devices get the "lite" tier.
 // Force a tier for testing with ?perf=lite or ?perf=full.

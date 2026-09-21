@@ -1,9 +1,10 @@
 :root{
+  --safe-top:env(safe-area-inset-top,0px); --safe-bottom:env(safe-area-inset-bottom,0px);
   --bg:#fff7ec;--ink:#14204a; --blue:#1f6bff; --cyan:#22d3ee; --violet:#8b5cf6; --pink:#f43f5e; --green:#22e39b; --red:#ff4d6d;
   --glass:rgba(255,255,255,.65); --line:rgba(20,32,74,.14); --txt:#14204a; --mute:#5b678f;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%}
+html,body{min-height:100%}
 body{background:linear-gradient(120deg,#ffe0f0,#fff1c9,#d6f5ff,#e4dcff,#ffe0f0);color:var(--txt);font-family:var(--f-sora),system-ui,sans-serif;overflow-x:hidden;min-height:100vh}
 canvas#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:50}
 canvas#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0}
@@ -21,8 +22,8 @@ canvas#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0}
 .grid{position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(20,32,74,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(20,32,74,.06) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(ellipse at center,#000 20%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse at center,#000 20%,transparent 75%);}
 @keyframes gridmove{to{background-position:56px 56px}}
 
-.stage{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 16px;perspective:1400px}
-.brand{position:absolute;top:22px;left:50%;transform:translateX(-50%);background:#fff;border-radius:16px;padding:8px 18px;box-shadow:0 10px 34px rgba(31,107,255,.3),0 0 0 1px rgba(20,32,74,.08);animation:drop 1s cubic-bezier(.2,1.4,.4,1) both}
+.stage{position:relative;z-index:2;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:calc(var(--safe-top) + 24px) 16px calc(var(--safe-bottom) + 24px);perspective:1400px}
+.brand{position:absolute;top:calc(var(--safe-top) + 14px);left:50%;transform:translateX(-50%);background:#fff;border-radius:16px;padding:8px 18px;box-shadow:0 10px 34px rgba(31,107,255,.3),0 0 0 1px rgba(20,32,74,.08);animation:drop 1s cubic-bezier(.2,1.4,.4,1) both}
 .brand img{height:34px;width:auto;display:block}
 @keyframes drop{from{transform:translate(-50%,-90px) scale(.6);opacity:0}}
 
@@ -178,16 +179,21 @@ body.playing .track,body.playing .tile,body.playing .tile .in::after{animation-p
 
 /* result: fit one screen, no scroll */
 body.result .showcase{display:none}
-body.result{overflow:hidden}
-body.result .stage{padding:12px 16px}
+body.result .stage{padding:calc(var(--safe-top) + 12px) 16px calc(var(--safe-bottom) + 16px)}
 body.result .card{width:min(1040px,100%);margin-top:64px;padding:clamp(16px,3vh,32px)}
+body.result .card{width:min(1040px,100%);margin-top:64px;padding:clamp(16px,3svh,32px)}
 body.result .res{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(16px,3vw,36px);align-items:center}
 body.result .trophy{font-size:clamp(44px,8vh,72px)}
+body.result .trophy{font-size:clamp(44px,8svh,72px)}
 body.result h1{font-size:clamp(24px,4.4vh,38px);margin-top:4px!important}
+body.result h1{font-size:clamp(24px,4.4svh,38px);margin-top:4px!important}
 body.result .sub{margin:6px 0 8px;font-size:13.5px}
 body.result .score{width:clamp(110px,20vh,160px);height:clamp(110px,20vh,160px);margin:6px auto}
+body.result .score{width:clamp(110px,20svh,160px);height:clamp(110px,20svh,160px);margin:6px auto}
 body.result .score .n{font-size:clamp(36px,7vh,52px)}
+body.result .score .n{font-size:clamp(36px,7svh,52px)}
 body.result .stars{font-size:clamp(24px,4vh,32px);margin:2px 0}
+body.result .stars{font-size:clamp(24px,4svh,32px);margin:2px 0}
 body.result .meta{margin:8px 0 12px}
 body.result .meta div{padding:8px 12px;font-size:12px}
 body.result .btn{padding:14px}
@@ -248,6 +254,23 @@ html[data-ultra] .track{animation-duration:80s}
 html[data-ultra] .btn::after,html[data-ultra] .chip b{animation:none}
 
 /* sound on/off */
-.snd{position:fixed;top:16px;right:16px;z-index:60;width:44px;height:44px;border-radius:50%;border:1px solid rgba(20,32,74,.12);background:rgba(255,255,255,.92);font-size:20px;line-height:1;cursor:pointer;box-shadow:0 6px 18px rgba(20,32,74,.15);display:grid;place-items:center;transition:transform .2s}
+.snd{position:fixed;top:calc(var(--safe-top) + 12px);right:max(12px,env(safe-area-inset-right,0px));z-index:60;width:44px;height:44px;border-radius:50%;border:1px solid rgba(20,32,74,.12);background:rgba(255,255,255,.92);font-size:20px;line-height:1;cursor:pointer;box-shadow:0 6px 18px rgba(20,32,74,.15);display:grid;place-items:center;transition:transform .2s}
 .snd:hover{transform:scale(1.1)}
 .snd:active{transform:scale(.92)}
+
+/* long names / long answers must wrap instead of pushing the layout sideways */
+h1,.ri .qq,.ri .aa,.q,.opt span{overflow-wrap:anywhere}
+.grad{display:inline}
+@media (max-height:700px){ body.result .trophy{display:none} }
+
+/* phones: squeeze the results page a little so more screens fit without scrolling */
+@media (max-width:820px){
+  body.result .review{gap:8px}
+  body.result .ri{padding:8px 10px}
+  body.result .ri .aa{margin-top:3px;padding:3px 8px}
+  body.result .stars{font-size:22px;margin:0;letter-spacing:4px}
+  body.result .meta{margin:2px 0 4px}
+  body.result .meta div{padding:6px 10px}
+  body.result .btn{padding:12px}
+  body.result h1{font-size:clamp(22px,3.4svh,30px)}
+}

@@ -2,3 +2,4 @@ node_modules
 .next
 data/*.xlsx
 .env.local
+.next-test
