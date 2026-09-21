@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import FxLayer from '@/components/FxLayer';
+import Header from '@/components/Header';
 
 export const metadata = { title: 'Download Excel · Renata Quiz', robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
@@ -14,7 +15,7 @@ export default async function DownloadPage({ searchParams }) {
     <>
       <FxLayer />
       <div className="stage">
-        <div className="brand"><img src="/img/logo.png" alt="Renata PLC" /></div>
+        <Header />
         <div className="card" style={{ width: 'min(440px,100%)' }}>
           <section className="screen active">
             <a className="btn big" style={{ display: 'block', textAlign: 'center', textDecoration: 'none' }}

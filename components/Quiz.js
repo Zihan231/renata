@@ -1,6 +1,7 @@
 'use client';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import FxLayer from './FxLayer';
+import Header from './Header';
 import { BANK, BRANDS, TOTAL, shuffle } from '@/lib/questions';
 import { normalizeBdPhone, PHONE_ERROR } from '@/lib/phone';
 import * as sfx from '@/lib/sound';
@@ -213,13 +214,12 @@ export default function Quiz() {
       <FxLayer ref={fx} />
       <button className="snd" onClick={toggleMute} aria-label={muted ? 'Unmute sound' : 'Mute sound'} title={muted ? 'Sound off' : 'Sound on'}>{muted ? '🔇' : '🔊'}</button>
       <div className="stage">
-        <div className="brand"><img src="/img/logo.png" alt="Renata PLC" width="172" height="34" decoding="async" /></div>
+        <Header />
 
         <div className={`card${shake ? ' shake' : ''}`} ref={cardRef}>
           {/* 1: register */}
           {screen === 'reg' && (
             <section className={`screen active${out}`}>
-              <div className="chip-wrap"><span className="chip"><b /> Renata Oncology · Live Quiz</span></div>
               <h1>Bioequivalence <span className="grad">Challenge</span></h1>
               <p className="sub">Enter your details to begin. 3 questions. Are you ready?</p>
               <form onSubmit={submit} noValidate>
@@ -246,7 +246,7 @@ export default function Quiz() {
                 <div className="avatar">{user.name[0]?.toUpperCase()}</div>
                 <div className="chip-wrap"><span className="chip"><b /> Registered</span></div>
                 <h1>Hello, <span className="grad">{user.name.split(' ')[0]}</span> <span className="w">👋</span></h1>
-                <p className="sub">Welcome to the Renata Oncology Quiz. Answer correctly to move forward — a wrong answer lets you try again.</p>
+                <p className="sub">Welcome to Bio Equivalent Challenge. Answer correctly to move forward — a wrong answer lets you try again.</p>
                 <div className="rules"><div><b>3</b>Questions</div><div><b>4</b>Options each</div><div><b>∞</b>Retries</div></div>
                 <button className="btn big" onClick={start}>🚀 Start Quiz</button>
               </div>
@@ -321,7 +321,7 @@ export default function Quiz() {
         </div>
 
         <div className="showcase">
-          <h3>Renata Oncology Portfolio</h3>
+          <h3><span>Renata Oncology Bio equivalent Products</span></h3>
           <div className="marquee"><div className="track">{tiles}{tiles}</div></div>
         </div>
       </div>
