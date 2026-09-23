@@ -10,7 +10,7 @@ const MARK_OK = 'M38 62 L54 78 L84 44';
 const MARK_NO = 'M42 42 L78 78 M78 42 L42 78';
 const GOOD = ['Brilliant!', 'Spot on!', 'Excellent!', 'Nailed it!'];
 const BAD = ['Oops, not quite!', 'Almost there!', 'Not this one!'];
-const MSGS = ['Great effort — you finished every question. Keep learning!', 'Well done! You know Renata Oncology well.', 'Perfect score! Outstanding bioequivalence knowledge! 🌟'];
+const MSGS = ['Great effort! 🥳', 'Well done! 🎇', 'Perfect score!🌟'];
 const CIRC = 502;
 
 const makeOrder = (item) => shuffle(item.o.map((t, i) => ({ t, ok: i === item.a })));
