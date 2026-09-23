@@ -3,3 +3,5 @@ node_modules
 data/*.xlsx
 .env.local
 .next-test
+dist
+.next-standalone
