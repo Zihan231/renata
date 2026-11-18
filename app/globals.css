@@ -358,3 +358,11 @@ html.kiosk body.result .ri .qq{font-size:22px}
 html.kiosk body.result .ri .aa{font-size:21px;padding:10px 14px;margin-top:8px}
 html.kiosk body.result .ri small{display:inline-block;font-size:15px}
 html.kiosk.kp body.result .rl{display:block}
+
+/* marquee must always scroll (kiosk): ignore OS "reduce motion" and never pause on hover/touch */
+@media (prefers-reduced-motion:reduce){
+  .track{animation-duration:34s!important;animation-iteration-count:infinite!important}
+  html.kiosk .track{animation-duration:26s!important}
+}
+.marquee:hover .track{animation-play-state:running}
+html.kiosk .track{animation-duration:26s}
