@@ -41,7 +41,7 @@ for (const f of ['Start-Kiosk.bat', 'Stop-Kiosk.bat']) {
   fs.writeFileSync(path.join(out, f), text);
 }
 
-fs.copyFileSync(path.join(root, 'scripts', 'Stop-Kiosk.ps1'), path.join(out, 'Stop-Kiosk.ps1'));
+for (const f of ['Start-Kiosk.ps1', 'Stop-Kiosk.ps1']) fs.copyFileSync(path.join(root, 'scripts', f), path.join(out, f));
 
 console.log('> compiling RenataQuiz.exe (optional: antivirus may remove it, use Start-Kiosk.bat instead)');
 const csc = path.join(process.env.WINDIR || 'C:\\Windows', 'Microsoft.NET', 'Framework64', 'v4.0.30319', 'csc.exe');
