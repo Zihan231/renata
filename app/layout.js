@@ -19,12 +19,19 @@ const TIER = `(function(){try{var d=document.documentElement,n=navigator,m=locat
 var lite=matchMedia('(pointer:coarse)').matches||innerWidth<820||(n.hardwareConcurrency&&n.hardwareConcurrency<=4)||(n.deviceMemory&&n.deviceMemory<=4)||(n.connection&&n.connection.saveData)||matchMedia('(prefers-reduced-motion:reduce)').matches;
 if(m)lite=m[1]==='lite';if(lite)d.dataset.perf='lite'}catch(e){}})()`;
 
+// Kiosk mode: any screen >= 820px wide gets a 1080x1920 (portrait) / 1920x1080 (landscape) canvas scaled to fit.
+// ?kiosk=1 forces it on, ?kiosk=0 turns it off.
+const KIOSK = `(function(){try{var d=document.documentElement,m=location.search.match(/kiosk=(0|1)/);
+function f(){var w=innerWidth,h=innerHeight,p=h>=w,k=Math.min(w/(p?1080:1920),h/(p?1920:1080));
+d.style.setProperty('--k',k);d.classList.toggle('kiosk',m?m[1]==='1':w>=820);d.classList.toggle('kp',p);d.classList.toggle('kl',!p)}
+f();addEventListener('resize',f)}catch(e){}})()`;
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${sora.variable} ${grot.variable}`} suppressHydrationWarning>
       {/* suppressHydrationWarning: browser extensions inject their own <script> into <head> before React hydrates */}
       <head suppressHydrationWarning>
-        <script suppressHydrationWarning dangerouslySetInnerHTML={{ __html: TIER }} />
+        <script suppressHydrationWarning dangerouslySetInnerHTML={{ __html: TIER + ';' + KIOSK }} />
       </head>
       <body>{children}</body>
     </html>

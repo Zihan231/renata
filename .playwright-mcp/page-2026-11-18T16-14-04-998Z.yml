@@ -1,0 +1,34 @@
+- generic [active] [ref=e1]:
+  - button "Mute sound" [ref=e4] [cursor=pointer]: 🔊
+  - generic [ref=e6]:
+    - generic [ref=e7]:
+      - img "100 Bioequivalent Products – Young minds, global impact" [ref=e9]
+      - img "Renata PLC" [ref=e11]
+    - generic [ref=e13]:
+      - heading "Bioequivalence Challenge" [level=1] [ref=e14]
+      - paragraph [ref=e15]: Enter your details to begin. 3 questions. Are you ready?
+      - generic [ref=e16]:
+        - generic [ref=e17]:
+          - textbox "Your full name" [ref=e18]:
+            - /placeholder: " "
+          - generic: Your full name
+        - generic [ref=e22]:
+          - textbox "Phone number" [ref=e23]:
+            - /placeholder: " "
+          - generic: Phone number
+        - button "Continue →" [ref=e27] [cursor=pointer]
+    - generic [ref=e28]:
+      - heading "Renata Oncology Bio equivalent Products" [level=3] [ref=e29]
+      - generic [ref=e32]:
+        - img "Rosimer" [ref=e35]
+        - img "Tyrokin" [ref=e38]
+        - img "Sofenib" [ref=e41]
+        - img "Pazoren" [ref=e44]
+        - img "Paltab" [ref=e47]
+        - img "R-Pag" [ref=e50]
+        - img "Rosimer" [ref=e53]
+        - img "Tyrokin" [ref=e56]
+        - img "Sofenib" [ref=e59]
+        - img "Pazoren" [ref=e62]
+        - img "Paltab" [ref=e65]
+        - img "R-Pag" [ref=e68]

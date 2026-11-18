@@ -19,6 +19,7 @@ const pick = (arr) => arr[(Math.random() * arr.length) | 0];
 export default function Quiz() {
   const fx = useRef(null);
   const cardRef = useRef(null);
+  const fitRef = useRef(null);
   const timers = useRef([]);
   const lock = useRef(false);
   const stat = useRef({ tries: 0, first: 0, missed: false, missedQ: [] });
@@ -72,6 +73,21 @@ export default function Quiz() {
     };
     addEventListener('pointermove', move);
     return () => removeEventListener('pointermove', move);
+  }, []);
+
+  // kiosk fit guard: if any screen is taller than the (scaled) display, shrink it so nothing is ever cut off / scrolled
+  useEffect(() => {
+    const el = fitRef.current; if (!el) return;
+    const stage = el.parentElement;
+    const calc = () => {
+      if (!document.documentElement.classList.contains('kiosk')) { el.style.removeProperty('--s'); return; }
+      const s = Math.min(1, (stage.clientHeight - 48) / el.offsetHeight, (stage.clientWidth - 24) / el.offsetWidth);
+      el.style.setProperty('--s', Math.max(0.3, s).toFixed(4));
+    };
+    calc();
+    const ro = new ResizeObserver(calc); ro.observe(el); ro.observe(stage);
+    addEventListener('resize', calc);
+    return () => { ro.disconnect(); removeEventListener('resize', calc); };
   }, []);
 
   // screen transition: fade current out, then swap
@@ -214,6 +230,7 @@ export default function Quiz() {
       <FxLayer ref={fx} />
       <button className="snd" onClick={toggleMute} aria-label={muted ? 'Unmute sound' : 'Mute sound'} title={muted ? 'Sound off' : 'Sound on'}>{muted ? '🔇' : '🔊'}</button>
       <div className="stage">
+        <div className="fit" ref={fitRef}>
         <Header />
 
         <div className={`card${shake ? ' shake' : ''}`} ref={cardRef}>
@@ -323,6 +340,7 @@ export default function Quiz() {
         <div className="showcase">
           <h3><span>Renata Oncology Bio equivalent Products</span></h3>
           <div className="marquee"><div className="track">{tiles}{tiles}</div></div>
+        </div>
         </div>
       </div>
 

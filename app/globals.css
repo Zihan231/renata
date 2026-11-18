@@ -283,3 +283,78 @@ h1,.ri .qq,.ri .aa,.q,.opt span{overflow-wrap:anywhere}
 }
 
 @media (max-width:520px){.showcase h3{letter-spacing:.16em;gap:10px;font-size:11px}.showcase h3::before,.showcase h3::after{width:26px}}
+
+/* ================= KIOSK MODE (50" touch kiosk) =================
+   layout.js sets html.kiosk + --k (scale) on any screen >= 820px wide (force with ?kiosk=1, disable with ?kiosk=0).
+   The page is laid out on a 1080x1920 canvas (1920x1080 when the screen is landscape) and scaled to the real
+   screen, so it looks identical on 1080p, 4K or any size. The whole experience always fits one screen:
+   the visitor never scrolls. Quiz.js adds a final "fit guard" (--s) that shrinks the content if a screen is taller. */
+.fit{display:contents}
+html.kiosk,html.kiosk body{height:100%;overflow:hidden}
+html.kiosk .stage{position:fixed;left:0;top:0;width:calc(100vw/var(--k,1));height:calc(100vh/var(--k,1));min-height:0;padding:0;overflow:hidden;transform:scale(var(--k,1));transform-origin:0 0;justify-content:center;align-items:center}
+html.kiosk .fit{display:flex;flex-direction:column;align-items:center;flex:none;width:100%;padding:0 60px;transform:scale(var(--s,1));transform-origin:center center}
+html.kiosk .brand-row{position:static;transform:none;width:min(960px,100%);margin-bottom:56px;animation:kdrop 1s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes kdrop{from{transform:translateY(-90px) scale(.6);opacity:0}}
+html.kiosk .brand{border-radius:22px}
+html.kiosk .brand-r{padding:16px 36px}
+html.kiosk .brand-r img{height:64px}
+html.kiosk .brand-l img{height:210px}
+html.kiosk .card{width:min(900px,100%);margin-top:0;padding:56px;border-radius:44px}
+html.kiosk .card::before{border-radius:46px;padding:3px}
+html.kiosk h1{font-size:76px}
+html.kiosk .sub{font-size:28px;margin:18px 0 44px}
+html.kiosk .chip{font-size:18px;padding:10px 22px;margin-bottom:24px}
+html.kiosk .field{margin-bottom:26px}
+html.kiosk .field input{font-size:30px;padding:40px 26px 14px 92px;border-radius:28px}
+html.kiosk .field label{left:92px;top:30px;font-size:28px}
+html.kiosk .field svg{left:30px;top:32px;width:36px;height:36px}
+html.kiosk .errmsg{font-size:22px;min-height:30px;margin:-8px 0 16px 8px}
+html.kiosk .btn{font-size:32px;padding:32px;border-radius:28px}
+html.kiosk .btn.big{font-size:38px;padding:38px}
+html.kiosk .avatar{width:150px;height:150px;font-size:70px;margin-bottom:26px}
+html.kiosk .rules{gap:18px;margin:36px 0}
+html.kiosk .rules div{font-size:20px;padding:22px 12px;border-radius:24px}
+html.kiosk .rules b{font-size:42px}
+html.kiosk .top{margin-bottom:30px}
+html.kiosk .steps span{height:12px}
+html.kiosk .qn{font-size:22px}
+html.kiosk .q{font-size:40px;margin-bottom:34px}
+html.kiosk .opts{gap:20px}
+html.kiosk .opt{padding:26px 30px;font-size:29px;gap:24px;border-radius:28px}
+html.kiosk .opt i{width:58px;height:58px;font-size:26px;border-radius:18px}
+html.kiosk .showcase{width:min(960px,100%);margin-top:56px;max-height:520px}
+html.kiosk .showcase h3{font-size:20px;gap:24px}
+html.kiosk .showcase h3::before,html.kiosk .showcase h3::after{width:100px}
+html.kiosk .marquee{padding:34px 0 40px}
+html.kiosk .track{gap:36px}
+html.kiosk .tile{width:300px;height:170px;border-radius:34px;padding:4px}
+html.kiosk .tile .in{border-radius:30px}
+html.kiosk body.playing .showcase{max-height:0}
+/* overlays live outside .stage, so scale them by hand */
+html.kiosk .fb-box{max-width:none;transform:scale(var(--k,1))}
+html.kiosk .fb-icon{width:240px;height:240px;margin-bottom:24px}
+html.kiosk .fb h2{font-size:104px}
+html.kiosk .fb p{font-size:30px;margin:16px 0 34px}
+html.kiosk .fb .btn{font-size:32px;padding:28px 64px}
+html.kiosk .snd{scale:var(--k,1);transform-origin:100% 100%;width:64px;height:64px;font-size:30px}
+/* result page: single column on a portrait kiosk so everything stays on one screen */
+html.kiosk body.result .card{width:min(900px,100%);margin-top:0;padding:40px 48px}
+html.kiosk body.result .res{gap:24px}
+html.kiosk.kp body.result .res{grid-template-columns:1fr}
+html.kiosk body.result .trophy{display:block;font-size:84px}
+html.kiosk body.result h1{font-size:56px}
+html.kiosk body.result .sub{font-size:26px;margin:6px 0 10px;display:block}
+html.kiosk body.result .score{width:230px;height:230px;margin:10px auto}
+html.kiosk body.result .score .n{font-size:76px}
+html.kiosk body.result .stars{font-size:48px;margin:4px 0}
+html.kiosk body.result .meta{margin:12px 0 20px}
+html.kiosk body.result .meta div{font-size:20px;padding:12px 22px}
+html.kiosk body.result .btn{font-size:28px;padding:24px}
+html.kiosk body.result .review{gap:14px}
+html.kiosk body.result .review h4{display:block;font-size:18px}
+html.kiosk body.result .ri{padding:20px 22px;gap:18px}
+html.kiosk body.result .ri .no{width:44px;height:44px;font-size:20px}
+html.kiosk body.result .ri .qq{font-size:22px}
+html.kiosk body.result .ri .aa{font-size:21px;padding:10px 14px;margin-top:8px}
+html.kiosk body.result .ri small{display:inline-block;font-size:15px}
+html.kiosk.kp body.result .rl{display:block}
