@@ -179,7 +179,7 @@ export default function Quiz() {
         setLeaving(false);
       }, 420);
     } else {
-      setOrder(makeOrder(qs[idx])); setPicked(null); setQkey((k) => k + 1);
+      setPicked(null); setQkey((k) => k + 1);
       lock.current = false;
     }
   };
