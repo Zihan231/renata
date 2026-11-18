@@ -37,8 +37,8 @@ fs.copyFileSync(process.execPath, path.join(out, 'runtime', 'node.exe'));
 console.log('> compiling RenataQuiz.exe');
 const csc = path.join(process.env.WINDIR || 'C:\\Windows', 'Microsoft.NET', 'Framework64', 'v4.0.30319', 'csc.exe');
 const icon = path.join(root, 'scripts', 'icon.ico');
-run(`"${csc}" /nologo /target:exe /optimize /out:"${path.join(out, 'RenataQuiz.exe')}"` +
+run(`"${csc}" /nologo /target:winexe /r:System.Windows.Forms.dll /optimize /out:"${path.join(out, 'RenataQuiz.exe')}"` +
   (fs.existsSync(icon) ? ` /win32icon:"${icon}"` : '') +
   ` "${path.join(root, 'scripts', 'launcher.cs')}"`);
 
-console.log(`\nDone: ${out}\nDouble-click RenataQuiz.exe to start.`);
+console.log(`\nDone: ${out}\nDouble-click RenataQuiz.exe to start (kiosk, full-screen; Alt+F4 just reopens it; run RenataQuiz.exe --stop to quit).`);
