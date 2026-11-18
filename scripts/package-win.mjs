@@ -34,11 +34,22 @@ console.log('> copying node.exe');
 fs.mkdirSync(path.join(out, 'runtime'), { recursive: true });
 fs.copyFileSync(process.execPath, path.join(out, 'runtime', 'node.exe'));
 
-console.log('> compiling RenataQuiz.exe');
+console.log('> copying Start-Kiosk.bat / Stop-Kiosk.bat');
+// .bat files must have CRLF line endings or labels/goto break
+for (const f of ['Start-Kiosk.bat', 'Stop-Kiosk.bat']) {
+  const text = fs.readFileSync(path.join(root, 'scripts', f), 'utf8').split(String.fromCharCode(13)).join('').split(String.fromCharCode(10)).join(String.fromCharCode(13, 10));
+  fs.writeFileSync(path.join(out, f), text);
+}
+
+fs.copyFileSync(path.join(root, 'scripts', 'Stop-Kiosk.ps1'), path.join(out, 'Stop-Kiosk.ps1'));
+
+console.log('> compiling RenataQuiz.exe (optional: antivirus may remove it, use Start-Kiosk.bat instead)');
 const csc = path.join(process.env.WINDIR || 'C:\\Windows', 'Microsoft.NET', 'Framework64', 'v4.0.30319', 'csc.exe');
 const icon = path.join(root, 'scripts', 'icon.ico');
-run(`"${csc}" /nologo /target:winexe /r:System.Windows.Forms.dll /optimize /out:"${path.join(out, 'RenataQuiz.exe')}"` +
+try {
+  run(`"${csc}" /nologo /target:winexe /r:System.Windows.Forms.dll /optimize /out:"${path.join(out, 'RenataQuiz.exe')}"` +
   (fs.existsSync(icon) ? ` /win32icon:"${icon}"` : '') +
   ` "${path.join(root, 'scripts', 'launcher.cs')}"`);
+} catch { console.warn('! RenataQuiz.exe could not be built (antivirus?). Use Start-Kiosk.bat instead.'); }
 
-console.log(`\nDone: ${out}\nDouble-click RenataQuiz.exe to start (kiosk, full-screen; Alt+F4 just reopens it; run RenataQuiz.exe --stop to quit).`);
+console.log(`\nDone: ${out}\nDouble-click Start-Kiosk.bat to start (kiosk, full-screen; Alt+F4 just reopens it; run Stop-Kiosk.bat to quit).`);
